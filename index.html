@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>UEP Mock Tests — NTS Pattern Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f1ea; --surface:#ffffff; --surface2:#ece7db; --ink:#14232e; --muted:#5b6b76;
+    --line:#ddd5c3; --navy:#0f2a44; --navy2:#16395c; --amber:#d98e04; --amber-ink:#7a5200;
+    --teal:#0e7c66; --red:#b3261e; --green:#1e7d32; --chip:#eef2f5;
+    --shadow:0 10px 30px rgba(15,42,68,.10);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d151c; --surface:#16222c; --surface2:#1d2d39; --ink:#eef3f5; --muted:#9db0bc;
+      --line:#2b3f4e; --navy:#0a1c2e; --navy2:#12293f; --amber:#f0a81c; --amber-ink:#f5c04e;
+      --teal:#2bb598; --red:#ff7a72; --green:#6fce7e; --chip:#1d2d39;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  button{font-family:inherit;cursor:pointer}
+  a{color:var(--navy2)}
+  @media (prefers-color-scheme: dark){ a{color:#8fc3e8} }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 18px 64px}
+
+  /* ---------- Hero ---------- */
+  .hero{background:var(--navy);color:#fff;margin:0 -0px;padding:34px 0 0;position:relative;overflow:hidden}
+  .hero-inner{max-width:1120px;margin:0 auto;padding:0 18px}
+  .hero .kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#ffd98a;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+  .hero h1{font-family:"Fraunces",Georgia,serif;font-weight:900;font-size:clamp(2rem,5.2vw,3.4rem);line-height:1.05;margin:16px 0 10px;max-width:16ch}
+  .hero h1 em{font-style:normal;color:var(--amber)}
+  .hero p.lead{color:#c9d8e4;max-width:62ch;margin:0 0 20px;font-size:1.02rem}
+  .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.14);border-top:1px solid rgba(255,255,255,.14);margin-top:8px}
+  .hero-stats div{background:var(--navy);padding:14px 18px}
+  .hero-stats b{display:block;font-size:1.45rem;line-height:1.1}
+  .hero-stats span{font-size:.8rem;color:#9fb6c8;font-weight:600}
+  @media (max-width:640px){ .hero-stats{grid-template-columns:repeat(2,1fr)} }
+
+  /* ---------- Sections ---------- */
+  section.block{margin-top:34px}
+  h2.sec{font-size:1.35rem;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+  p.sec-sub{color:var(--muted);margin:0 0 16px;max-width:70ch}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+  /* ---------- Syllabus table ---------- */
+  .syllabus{display:grid;grid-template-columns:1.4fr .5fr 2fr;gap:0;overflow:hidden}
+  .syllabus .row{display:contents}
+  .syllabus .cell{padding:13px 16px;border-bottom:1px solid var(--line)}
+  .syllabus .head{background:var(--surface2);font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em}
+  .syllabus .marks{font-weight:800;text-align:center}
+  .syllabus .total .cell{font-weight:800;background:var(--surface2);border-bottom:none}
+  @media (max-width:640px){
+    .syllabus{grid-template-columns:1.2fr .45fr}
+    .syllabus .cell.topics{display:none}
+    .syllabus .head.topics{display:none}
+  }
+
+  /* ---------- Lock / gate ---------- */
+  .gate{padding:26px}
+  .gate-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:center}
+  @media (max-width:760px){ .gate-grid{grid-template-columns:1fr} }
+  .gate h3{margin:0 0 6px;font-size:1.2rem}
+  .gate p{color:var(--muted);margin:0 0 14px}
+  .pw-row{display:flex;gap:10px;flex-wrap:wrap}
+  .pw-row input{flex:1 1 220px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:1rem;background:var(--surface);color:var(--ink)}
+  .pw-row input:focus{outline:2px solid var(--amber);outline-offset:1px;border-color:transparent}
+  .btn{border:none;border-radius:10px;padding:12px 20px;font-weight:800;font-size:.98rem;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+  .btn-amber{background:var(--amber);color:#1c1400}
+  .btn-amber:hover{filter:brightness(1.07)}
+  .btn-wa{background:#1faa55;color:#fff;text-decoration:none}
+  .btn-wa:hover{background:#178f47}
+  .btn-wa svg{flex:none}
+  .wa-note{font-weight:700;margin:16px 0 8px}
+  .btn-navy{background:var(--navy);color:#fff}
+  .btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--muted)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .pw-error{display:none;color:var(--red);font-weight:700;margin-top:10px;font-size:.92rem}
+  .pw-error.show{display:block}
+  .unlocked-banner{display:none;align-items:center;gap:10px;background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-weight:700}
+  .unlocked-banner.show{display:flex}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--teal);flex:none}
+
+  /* ---------- Test grid ---------- */
+  .tests{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px}
+  .test-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+  .test-card .num{font-family:"Fraunces",Georgia,serif;font-size:1.9rem;font-weight:900;line-height:1;color:var(--navy2)}
+  @media (prefers-color-scheme: dark){ .test-card .num{color:#cfe3f2} }
+  .test-card h3{margin:0;font-size:1.02rem}
+  .test-card p{margin:0;color:var(--muted);font-size:.86rem;flex:1}
+  .test-card .meta{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-size:.72rem;font-weight:800;background:var(--chip);border:1px solid var(--line);padding:3px 8px;border-radius:999px;color:var(--muted)}
+  .test-card .best{font-size:.85rem;font-weight:800;color:var(--teal)}
+  .test-card.locked{opacity:.55}
+  .test-card.locked .btn{pointer-events:none}
+
+  /* ---------- Runner ---------- */
+  #runner{display:none}
+  .runner-top{position:sticky;top:0;z-index:20;background:var(--bg);padding:12px 0 10px}
+  .runner-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;box-shadow:var(--shadow)}
+  .timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:1.15rem;background:var(--navy);color:#fff;padding:6px 14px;border-radius:8px}
+  .timer.warn{background:var(--red)}
+  .progress{flex:1 1 160px;height:10px;background:var(--surface2);border-radius:99px;overflow:hidden;min-width:120px}
+  .progress i{display:block;height:100%;background:var(--amber);width:0%;transition:width .25s}
+  .qcard{padding:24px;margin-top:6px}
+  .qmeta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .qmeta .tag{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .qmeta .tag.soft{background:var(--chip);color:var(--muted);border-color:var(--line)}
+  .qtext{font-size:1.13rem;font-weight:700;line-height:1.5;margin:0 0 18px}
+  .opts{display:grid;gap:10px}
+  .opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;font-size:1rem;color:var(--ink)}
+  .opt:hover{border-color:var(--amber)}
+  .opt.sel{border-color:var(--navy2);background:var(--chip);font-weight:700}
+  .opt .letter{flex:none;width:28px;height:28px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .opt.sel .letter{background:var(--amber);color:#1c1400}
+  .runner-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .runner-nav .spacer{flex:1}
+  .palette{margin-top:16px;padding:18px}
+  .palette h4{margin:0 0 10px;font-size:.9rem}
+  .pgrid{display:flex;flex-wrap:wrap;gap:6px}
+  .pbtn{width:38px;height:38px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface);font-weight:700;font-size:.82rem;color:var(--ink);padding:0}
+  .pbtn.answered{background:var(--teal);border-color:var(--teal);color:#fff}
+  .pbtn.marked{box-shadow:inset 0 0 0 2px var(--amber)}
+  .pbtn.current{outline:2.5px solid var(--navy2);outline-offset:1px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:10px}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+  /* ---------- Result ---------- */
+  #result{display:none}
+  .score-hero{padding:28px;text-align:center}
+  .score-big{font-family:"Fraunces",Georgia,serif;font-size:3.4rem;font-weight:900;line-height:1}
+  .score-hero p{color:var(--muted);margin:8px 0 0}
+  .verdict{font-weight:800;font-size:1.05rem;margin-top:6px}
+  .sec-break{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:16px}
+  .sec-break .card{padding:16px;box-shadow:none}
+  .sec-break b{display:block;font-size:1.3rem}
+  .sec-break span{color:var(--muted);font-size:.85rem;font-weight:600}
+  .bar{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-top:8px}
+  .bar i{display:block;height:100%;background:var(--teal)}
+  .review-item{padding:18px 20px;border-bottom:1px solid var(--line)}
+  .review-item:last-child{border-bottom:none}
+  .review-item .rq{font-weight:700;margin:0 0 8px}
+  .review-item .ra{font-size:.93rem;margin:3px 0}
+  .ok{color:var(--green);font-weight:700}
+  .bad{color:var(--red);font-weight:700}
+  .exp{color:var(--muted);font-size:.9rem;margin-top:6px}
+  .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+  .filter-row .btn{padding:9px 16px;font-size:.9rem}
+  .filter-row .btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .note{font-size:.88rem;color:var(--muted)}
+  .hidden{display:none !important}
+  footer{margin-top:44px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.86rem}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;scroll-behavior:auto !important} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="kicker">United Energy Pakistan · NTS Pattern</span>
+    <h1>UEP Mock Tests for <em>Field Production Trainee</em></h1>
+    <p class="lead">Full-length practice papers built on the UEP written-test pattern conducted through NTS — 100 MCQs, 90 minutes, one mark each, covering English, Physics, Everyday Science, Chemistry, Basic Mathematics and General Knowledge / Pak Studies.</p>
+  </div>
+  <div class="hero-inner" style="padding-bottom:0">
+    <div class="hero-stats" style="border-radius:12px 12px 0 0;overflow:hidden">
+      <div><b>10</b><span>Full mock tests</span></div>
+      <div><b>100</b><span>MCQs per test</span></div>
+      <div><b>90 min</b><span>Per test — timed</span></div>
+      <div><b>1,000</b><span>Practice questions</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Syllabus -->
+  <section class="block" aria-labelledby="syl-h">
+    <h2 class="sec" id="syl-h">Test pattern &amp; syllabus</h2>
+    <p class="sec-sub">Each mock follows the same section weightage as the real paper. Exact weightages in the actual test can vary slightly by job advertisement — this distribution keeps the total at exactly 100 marks.</p>
+    <div class="card syllabus" role="table" aria-label="UEP test syllabus breakdown">
+      <div class="row"><div class="cell head">Section</div><div class="cell head marks">Marks</div><div class="cell head topics">Topics covered</div></div>
+      <div class="row"><div class="cell">English</div><div class="cell marks">30</div><div class="cell topics">Grammar, vocabulary (synonyms &amp; antonyms), sentence completion, analogies, prepositions, reading comprehension</div></div>
+      <div class="row"><div class="cell">Physics</div><div class="cell marks">20</div><div class="cell topics">SI units, motion, force, work &amp; energy, heat, electricity, waves, pressure — concepts and numericals</div></div>
+      <div class="row"><div class="cell">Everyday / General Science</div><div class="cell marks">15</div><div class="cell topics">Human body, plants, environment, everyday chemistry and physics of daily life</div></div>
+      <div class="row"><div class="cell">Chemistry</div><div class="cell marks">10</div><div class="cell topics">Chemical formulas, elements &amp; symbols, states of matter, acids &amp; bases, introductory concepts</div></div>
+      <div class="row"><div class="cell">Basic Mathematics</div><div class="cell marks">15</div><div class="cell topics">Averages, percentages, ratios &amp; proportions, profit &amp; loss, interest, word problems, basic arithmetic</div></div>
+      <div class="row"><div class="cell">GK, Pak Studies &amp; Current Affairs</div><div class="cell marks">10</div><div class="cell topics">Pakistan affairs, Islamic studies, everyday general knowledge, world capitals and facts</div></div>
+      <div class="row total"><div class="cell">Total — 90 minutes</div><div class="cell marks">100</div><div class="cell topics">Physics + Everyday Science together make 35 marks, matching the real paper's combined science weightage.</div></div>
+    </div>
+  </section>
+
+  <!-- Password gate -->
+  <section class="block" aria-labelledby="gate-h">
+    <h2 class="sec" id="gate-h">Unlock the tests</h2>
+    <p class="sec-sub">All 10 mock tests are password protected. Enter the password once to open the full test library on this page.</p>
+    <div class="card gate">
+      <div class="gate-grid" id="gateForm">
+        <div>
+          <h3>Enter test password</h3>
+          <p>Type the password you were given and press Unlock. The tests, timer and answer keys open right here — nothing is sent anywhere.</p>
+          <div class="pw-row">
+            <input type="password" id="pwInput" placeholder="Enter password" autocomplete="off" aria-label="Test password" />
+            <button class="btn btn-amber" id="pwBtn" type="button">Unlock Tests</button>
+          </div>
+          <p class="pw-error" id="pwError">Incorrect password. Please check and try again.</p>
+          <p class="wa-note">Need password? Please contact on WhatsApp</p>
+          <a class="btn btn-wa" href="https://wa.me/923480358640?text=Assalam-o-Alaikum!%20I%20need%20the%20password%20for%20the%20UEP%20Mock%20Tests.%20Please%20share%20it%20with%20me." target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            Chat on WhatsApp — +92 348 0358640
+          </a>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Before you start</h3>
+          <p style="margin-bottom:8px">• Sit in a quiet place and treat it like the real NTS hall.<br>
+          • The 90-minute timer starts as soon as you open a test and the paper auto-submits when time ends.<br>
+          • You can move freely between questions and mark any question for review.<br>
+          • Your score, section-wise breakdown and full answer review appear at the end of each test.</p>
+        </div>
+      </div>
+      <div class="unlocked-banner" id="unlockedBanner">
+        <span class="dot"></span>
+        <span>Tests unlocked — all 10 mock tests are open below. Good luck!</span>
+        <span style="flex:1"></span>
+        <button class="btn btn-ghost" id="lockBtn" type="button" style="padding:8px 14px;min-height:2.25rem">Lock again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Test library -->
+  <section class="block" id="library" aria-labelledby="lib-h">
+    <h2 class="sec" id="lib-h">Mock test library</h2>
+    <p class="sec-sub">Ten full-length papers. Each one is a fresh mix across all six sections — finish one, review every answer, then move to the next.</p>
+    <div class="tests" id="testGrid"></div>
+  </section>
+
+  <!-- Runner -->
+  <div id="runner" aria-live="polite">
+    <div class="runner-top">
+      <div class="runner-bar">
+        <strong id="runnerTitle">Mock Test 1</strong>
+        <span class="timer" id="timer">90:00</span>
+        <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
+        <span class="note" id="answeredCount">0 / 100 answered</span>
+        <button class="btn btn-ghost" id="quitBtn" type="button" style="padding:8px 14px">Quit</button>
+        <button class="btn btn-amber" id="submitBtnTop" type="button" style="padding:8px 16px">Submit Test</button>
+      </div>
+    </div>
+    <div class="card qcard">
+      <div class="qmeta">
+        <span class="tag" id="qSubject">English</span>
+        <span class="tag soft" id="qNumber">Question 1 of 100</span>
+        <span class="tag soft" id="qMarkState">Not marked</span>
+      </div>
+      <p class="qtext" id="qText"></p>
+      <div class="opts" id="qOpts"></div>
+      <div class="runner-nav">
+        <button class="btn btn-ghost" id="prevBtn" type="button">← Previous</button>
+        <button class="btn btn-ghost" id="markBtn" type="button">Mark for review</button>
+        <button class="btn btn-ghost" id="clearBtn" type="button">Clear answer</button>
+        <span class="spacer"></span>
+        <button class="btn btn-navy" id="nextBtn" type="button">Next →</button>
+      </div>
+    </div>
+    <div class="card palette">
+      <h4>Question navigator — tap any number to jump</h4>
+      <div class="pgrid" id="pgrid"></div>
+      <div class="legend">
+        <span><i style="background:var(--teal)"></i>Answered</span>
+        <span><i style="background:var(--surface2);border:1px solid var(--line)"></i>Not answered</span>
+        <span><i style="background:transparent;box-shadow:inset 0 0 0 2px var(--amber)"></i>Marked for review</span>
+      </div>
+      <div class="runner-nav">
+        <span class="note">The test auto-submits when the 90 minutes end.</span>
+        <span class="spacer"></span>
+        <button class="btn btn-amber" id="submitBtn" type="button">Submit Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="result">
+    <section class="block">
+      <div class="card score-hero">
+        <span class="tag" id="resTestName">Mock Test 1</span>
+        <div class="score-big" id="resScore">0 / 100</div>
+        <div class="verdict" id="resVerdict"></div>
+        <p id="resMeta"></p>
+        <div class="runner-nav" style="justify-content:center">
+          <button class="btn btn-navy" id="backLibBtn" type="button">Back to test library</button>
+          <button class="btn btn-ghost" id="retryBtn" type="button">Retake this test</button>
+        </div>
+      </div>
+      <h2 class="sec" style="margin-top:26px">Section-wise performance</h2>
+      <div class="sec-break" id="secBreak"></div>
+      <h2 class="sec" style="margin-top:26px">Answer review</h2>
+      <div class="filter-row" role="group" aria-label="Review filter">
+        <button class="btn btn-ghost active" data-filter="all" type="button">All questions</button>
+        <button class="btn btn-ghost" data-filter="wrong" type="button">Wrong only</button>
+        <button class="btn btn-ghost" data-filter="skipped" type="button">Skipped only</button>
+        <button class="btn btn-ghost" data-filter="correct" type="button">Correct only</button>
+      </div>
+      <div class="card" id="reviewList"></div>
+    </section>
+  </div>
+
+  <footer>
+    <p style="margin:0 0 10px">Prepared for UEP (United Energy Pakistan) written-test practice on the NTS pattern — Field Production Trainee and similar roles. Practice material only; section weightages in the actual test may vary slightly by job advertisement.</p>
+    <p style="margin:0 0 12px"><strong>Contact:</strong> For the test password or any question about these mock tests, message on WhatsApp at <strong>+92 348 0358640</strong>.</p>
+    <a class="btn btn-wa" href="https://wa.me/923480358640?text=Assalam-o-Alaikum!%20I%20need%20the%20password%20for%20the%20UEP%20Mock%20Tests.%20Please%20share%20it%20with%20me." target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ================= Helpers ================= */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function shuffle(arr,rng){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(rng()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function Q(subject,q,correct,wrongs,exp){return{subject:subject,q:q,correct:correct,wrongs:wrongs,exp:exp||""};}
+function fromPairs(subject,template,pairs){return pairs.map(function(p){return Q(subject,template.replace("{W}",p[0]),p[1],[p[2],p[3],p[4]],p[5]||"");});}
+
+/* ================= ENGLISH ================= */
+var SYN=[["Abundant","Plentiful","Scarce","Rare","Meagre"],["Ancient","Old","Modern","New","Recent"],["Brave","Courageous","Cowardly","Timid","Fearful"],["Candid","Frank","Evasive","Secretive","Dishonest"],["Diligent","Hardworking","Lazy","Careless","Idle"],["Enormous","Huge","Tiny","Small","Minute"],["Fragile","Delicate","Strong","Sturdy","Tough"],["Generous","Kind","Stingy","Selfish","Mean"],["Hesitate","Waver","Decide","Rush","Proceed"],["Immense","Vast","Tiny","Narrow","Limited"],["Jealous","Envious","Content","Satisfied","Trusting"],["Keen","Eager","Dull","Apathetic","Reluctant"],["Lucid","Clear","Vague","Confusing","Dark"],["Meagre","Scanty","Plentiful","Abundant","Ample"],["Notable","Remarkable","Ordinary","Common","Useless"],["Obscure","Unclear","Clear","Famous","Obvious"],["Peculiar","Strange","Normal","Usual","Regular"],["Rapid","Swift","Slow","Gradual","Lazy"],["Scarce","Rare","Plentiful","Common","Abundant"],["Tedious","Boring","Exciting","Pleasant","Short"],["Urgent","Pressing","Trivial","Calm","Delayed"],["Vague","Unclear","Clear","Definite","Precise"],["Weary","Tired","Fresh","Active","Energetic"],["Yield","Surrender","Resist","Fight","Hold"],["Zeal","Enthusiasm","Apathy","Laziness","Boredom"],["Adequate","Sufficient","Insufficient","Lacking","Short"],["Brisk","Quick","Slow","Dull","Lazy"],["Comprehend","Understand","Confuse","Ignore","Miss"],["Defeat","Conquer","Lose","Surrender","Retreat"],["Emerge","Appear","Vanish","Hide","Sink"],["Fatigue","Tiredness","Energy","Strength","Rest"],["Gloomy","Dark","Bright","Cheerful","Sunny"],["Humble","Modest","Proud","Arrogant","Rude"],["Inferior","Lower","Superior","Better","Higher"],["Jubilant","Joyful","Sad","Gloomy","Angry"],["Tranquil","Peaceful","Noisy","Violent","Restless"]];
+var ANT=[["Ancient","Modern","Old","Antique","Aged"],["Brave","Cowardly","Bold","Heroic","Daring"],["Cruel","Kind","Rude","Harsh","Brutal"],["Deep","Shallow","Profound","Bottomless","Wide"],["Expand","Contract","Extend","Enlarge","Spread"],["Failure","Success","Defeat","Loss","Ruin"],["Generous","Stingy","Kind","Liberal","Giving"],["Honest","Dishonest","Truthful","Sincere","Fair"],["Ignorant","Knowledgeable","Unaware","Foolish","Blind"],["Junior","Senior","Younger","Minor","Lower"],["Knowledge","Ignorance","Wisdom","Learning","Sense"],["Lenient","Strict","Soft","Gentle","Mild"],["Maximum","Minimum","Highest","Utmost","Peak"],["Narrow","Wide","Thin","Slim","Tight"],["Optimist","Pessimist","Hopeful","Positive","Cheerful"],["Permanent","Temporary","Lasting","Eternal","Fixed"],["Quiet","Noisy","Silent","Calm","Still"],["Rapid","Slow","Swift","Quick","Fast"],["Scarce","Abundant","Rare","Few","Limited"],["Transparent","Opaque","Clear","Obvious","Plain"],["Unity","Division","Harmony","Oneness","Peace"],["Victory","Defeat","Triumph","Win","Glory"],["Wealth","Poverty","Riches","Fortune","Luxury"],["Yield","Resist","Surrender","Submit","Give in"],["Zenith","Nadir","Peak","Top","Summit"],["Artificial","Natural","Fake","False","Made-up"],["Barren","Fertile","Dry","Empty","Waste"],["Conceal","Reveal","Hide","Cover","Bury"],["Diminish","Increase","Reduce","Lessen","Shrink"],["Exterior","Interior","Outer","Outside","Surface"]];
+var GRAM=[
+["He has been living in Karachi ___ 2015.","since",["for","from","by"],"Use 'since' with a point of time (2015)."],
+["She is good ___ mathematics.","at",["in","on","for"],"The correct phrase is 'good at'."],
+["The train had left before we ___ at the station.","arrived",["arrive","arrives","have arrive"],"Past perfect with 'before' takes simple past in the second clause."],
+["Neither the teacher nor the students ___ present.","were",["was","is","has been"],"With 'neither...nor', the verb agrees with the nearer subject (students)."],
+["He prefers tea ___ coffee.","to",["than","over","from"],"'Prefer' is followed by 'to', not 'than'."],
+["If I ___ rich, I would help the poor.","were",["was","am","be"],"In unreal conditions, 'were' is used for all persons."],
+["She ___ her homework before dinner yesterday.","had finished",["finish","finishes","finishing"],"The action completed before another past action takes past perfect."],
+["He placed the keys ___ the drawer.","in",["on","at","of"],"Keys placed inside a drawer take 'in'."],
+["You must obey your parents, ___?","mustn't you",["must you","shouldn't you","don't you"],"The question tag of 'must' is 'mustn't'."],
+["He is the man ___ car was stolen.","whose",["who","whom","which"],"'Whose' shows possession."],
+["I have no pen to write ___ .","with",["by","from","on"],"The infinitive phrase is 'to write with'."],
+["She is afraid ___ dogs.","of",["from","with","by"],"The correct phrase is 'afraid of'."],
+["The meeting was presided ___ by the chairman.","over",["on","by","with"],"The phrase is 'presided over'."],
+["He died ___ cholera.","of",["from","by","with"],"We say 'died of' a disease."],
+["Ten kilometres ___ a long distance.","is",["are","were","have"],"A measured distance is treated as singular."],
+["He congratulated me ___ my success.","on",["for","at","in"],"The phrase is 'congratulated on'."],
+["She speaks English ___.","fluently",["fluent","fluence","fluency"],"An adverb (fluently) is needed to modify the verb 'speaks'."],
+["By next year, they ___ the bridge.","will have built",["build","builds","building"],"Future perfect is used for an action completed by a future time."],
+["He is senior ___ me.","to",["than","from","of"],"Latin comparatives like senior, junior, superior take 'to'."],
+["The police ___ investigating the case.","are",["is","was","has"],"Police is always plural."],
+["Hardly had he reached home ___ it started raining.","when",["than","then","that"],"'Hardly/Scarcely' is paired with 'when'."],
+["No sooner did he see the police ___ he ran away.","than",["when","then","that"],"'No sooner' is paired with 'than'."],
+["She as well as her sisters ___ going.","is",["are","were","have"],"With 'as well as', the verb agrees with the first subject (She)."],
+["Each of the boys ___ given a prize.","was",["were","are","have"],"Each is singular."],
+["He has been ill ___ Monday.","since",["for","from","by"],"Use 'since' with a point of time (Monday)."],
+["I am looking forward ___ hearing from you.","to",["for","at","on"],"In 'look forward to', 'to' is a preposition followed by -ing form."],
+["The thief was caught ___ the police.","by",["from","with","of"],"In passive voice, the doer is introduced by 'by'."],
+["Beware ___ pickpockets.","of",["from","for","against"],"The phrase is 'beware of'."],
+["She is married ___ a doctor.","to",["with","by","from"],"We say 'married to' a person."],
+["He prevented me ___ going there.","from",["to","for","by"],"The phrase is 'prevented from'."],
+["The sun rises in the east, ___?","doesn't it",["isn't it","does it","hasn't it"],"The statement uses 'rises' (present simple), so the tag is 'doesn't it'."],
+["He took ___ his shoes before entering the mosque.","off",["out","of","away"],"'Take off' means to remove."],
+["Please look ___ this word in the dictionary.","up",["for","at","into"],"'Look up' means to search for information."],
+["He is suffering ___ fever.","from",["with","of","by"],"The phrase is 'suffering from'."],
+["She has a great fondness ___ music.","for",["of","to","in"],"The phrase is 'fondness for'."],
+["Bread and butter ___ his usual breakfast.","is",["are","were","have been"],"Two items forming one dish are treated as singular."]];
+var ANALOGY=[
+["Doctor is to Hospital as Teacher is to ___","School",["Court","Office","Garage"],"Both work in the place named."],
+["Book is to Pages as Wall is to ___","Bricks",["Roof","Paint","Door"],"A wall is made of bricks as a book is made of pages."],
+["Water is to Thirst as Food is to ___","Hunger",["Taste","Cook","Plate"],"Water removes thirst; food removes hunger."],
+["Pen is to Write as Knife is to ___","Cut",["Eat","Sharp","Steel"],"Each is the tool for the action."],
+["Bird is to Fly as Fish is to ___","Swim",["Walk","Sing","Jump"],"Natural movement of each creature."],
+["King is to Throne as Judge is to ___","Court",["Crown","Law","Prison"],"Workplace/position pairing."],
+["Eye is to See as Ear is to ___","Hear",["Speak","Smell","Taste"],"Function of the organ."],
+["Car is to Road as Train is to ___","Track",["Station","Driver","Wheel"],"Each travels on the named path."],
+["Author is to Book as Poet is to ___","Poem",["Song","Novel","Drama"],"Creator and creation."],
+["Finger is to Hand as Toe is to ___","Foot",["Leg","Shoe","Nail"],"Part and whole."],
+["Captain is to Ship as Pilot is to ___","Aeroplane",["Airport","Passenger","Engine"],"Person in charge of the vehicle."],
+["Day is to Night as Summer is to ___","Winter",["Spring","Rain","Heat"],"Opposite seasons/times."]];
+var IDIOM=[
+["To bite the dust","To fail",["To eat soil","To work hard","To succeed"]],
+["A blessing in disguise","A hidden benefit",["A clear loss","A religious ceremony","Bad luck"]],
+["To burn the midnight oil","To work late at night",["To waste oil","To light a lamp","To sleep early"]],
+["A white elephant","A useless but costly possession",["A rare animal","A royal gift","A profitable business"]],
+["To read between the lines","To understand the hidden meaning",["To read slowly","To skip lines","To read aloud"]],
+["Once in a blue moon","Very rarely",["Every night","Every month","Very often"]],
+["To call it a day","To stop working",["To name a day","To start work","To take leave"]],
+["By leaps and bounds","Very rapidly",["By jumping","Slowly","Carefully"]]];
+var SPELL=["Occurrence","Committee","Separate","Definitely","Embarrass","Accommodate"].map(function(w){
+  var wrong={Occurrence:["Occurrance","Ocurrence","Occurence"],Committee:["Comittee","Commitee","Comitee"],Separate:["Seperate","Saparate","Seprate"],Definitely:["Definately","Definitly","Definetely"],Embarrass:["Embarass","Embaras","Embbbarass"],Accommodate:["Acommodate","Accomodate","Acomodate"]}[w];
+  return Q("English","Choose the correctly spelt word:",w,wrong,"The correct spelling is '"+w+"'.");});
+var READING=[
+Q("English","Read the passage and answer: 'Ahmed works in an oil field. He starts his duty at 6 a.m. and checks the pressure gauges before anything else, because a small leak can become a big accident.' What does Ahmed check first?","Pressure gauges",["Production reports","Weather forecast","Staff attendance"],"The passage says he checks the pressure gauges before anything else."),
+Q("English","Read the passage and answer: 'Regular exercise keeps the heart strong. People who walk for thirty minutes daily are less likely to suffer from heart disease than those who sit all day.' According to the passage, daily walking reduces the risk of:","Heart disease",["Broken bones","Eye strain","Hearing loss"],"The passage directly links daily walking with lower risk of heart disease."),
+Q("English","Read the passage and answer: 'The Indus is the longest river of Pakistan. It rises in Tibet, flows through the northern mountains and plains of Punjab and Sindh, and falls into the Arabian Sea.' Where does the Indus end?","Arabian Sea",["Bay of Bengal","Persian Gulf","Red Sea"],"The passage says it falls into the Arabian Sea.")];
+var ENG_POOL=[]
+ .concat(fromPairs("English","Choose the word closest in MEANING to '{W}':",SYN))
+ .concat(fromPairs("English","Choose the word OPPOSITE in meaning to '{W}':",ANT))
+ .concat(GRAM.map(function(g){return Q("English","Fill in the blank: "+g[0],g[1],g[2],g[3]);}))
+ .concat(ANALOGY.map(function(g){return Q("English","Complete the analogy: "+g[0],g[1],g[2],g[3]);}))
+ .concat(IDIOM.map(function(g){return Q("English","What does the idiom '"+g[0]+"' mean?",g[1],g[2],"");}))
+ .concat(SPELL).concat(READING);
+
+/* ================= PHYSICS ================= */
+var PHYS_RAW=[
+["The SI unit of force is:","Newton",["Joule","Watt","Pascal"],"Force is measured in newtons (N)."],
+["The SI unit of energy is:","Joule",["Newton","Watt","Volt"],"Energy and work are measured in joules (J)."],
+["The SI unit of power is:","Watt",["Joule","Ampere","Ohm"],"Power = work / time, measured in watts."],
+["The SI unit of pressure is:","Pascal",["Newton","Joule","Tesla"],"Pressure = force / area, measured in pascals."],
+["The SI unit of electric current is:","Ampere",["Volt","Ohm","Watt"],"Current is measured in amperes (A)."],
+["The SI unit of resistance is:","Ohm",["Volt","Ampere","Siemens"],"Resistance is measured in ohms."],
+["The SI unit of frequency is:","Hertz",["Newton","Pascal","Joule"],"Frequency is measured in hertz (Hz)."],
+["The SI base unit of temperature is:","Kelvin",["Celsius","Fahrenheit","Joule"],"Kelvin is the SI unit of temperature."],
+["The speed of light in vacuum is approximately:","3 x 10^8 m/s",["3 x 10^6 m/s","3 x 10^5 m/s","1.5 x 10^8 m/s"],"Light travels at about 300,000 km per second."],
+["The value of acceleration due to gravity on Earth is:","9.8 m/s^2",["8.9 m/s^2","10.8 m/s^2","6.7 m/s^2"],"Standard gravity is 9.8 m/s^2."],
+["An ammeter is used to measure:","Electric current",["Voltage","Resistance","Power"],"An ammeter is connected in series to measure current."],
+["A voltmeter is used to measure:","Potential difference",["Current","Charge","Energy"],"A voltmeter is connected in parallel."],
+["A barometer measures:","Atmospheric pressure",["Temperature","Humidity","Wind speed"],"Barometers measure air pressure."],
+["Which colour of light has the longest wavelength?","Red",["Violet","Blue","Green"],"Red light has the longest wavelength in the visible spectrum."],
+["Sound cannot travel through:","Vacuum",["Air","Water","Steel"],"Sound needs a material medium."],
+["The approximate speed of sound in air is:","343 m/s",["150 m/s","1500 m/s","3 x 10^8 m/s"],"Sound travels at about 343 m/s in air at room temperature."],
+["Which of the following is a vector quantity?","Velocity",["Speed","Mass","Distance"],"Velocity has both magnitude and direction."],
+["Which of the following is a scalar quantity?","Mass",["Force","Velocity","Acceleration"],"Mass has magnitude only."],
+["Ohm's law is expressed as:","V = IR",["P = VI","F = ma","E = mc^2"],"Voltage = current x resistance."],
+["An electric motor converts:","Electrical energy into mechanical energy",["Mechanical energy into electrical energy","Heat into light","Chemical into electrical energy"],"Motors turn electricity into motion."],
+["A generator converts:","Mechanical energy into electrical energy",["Electrical into mechanical energy","Heat into sound","Light into heat"],"Generators produce electricity from motion."],
+["Short sight (myopia) is corrected by a:","Concave lens",["Convex lens","Plane mirror","Bifocal only"],"A diverging (concave) lens corrects myopia."],
+["Long sight (hyperopia) is corrected by a:","Convex lens",["Concave lens","Plane glass","Concave mirror"],"A converging (convex) lens corrects hyperopia."],
+["Dentists use a ___ mirror to see an enlarged image of teeth:","Concave",["Convex","Plane","Cylindrical"],"A concave mirror gives a magnified image."],
+["Rear-view mirrors of vehicles are:","Convex mirrors",["Plane mirrors","Concave mirrors","Parabolic mirrors"],"Convex mirrors give a wider field of view."],
+["A rainbow is formed due to:","Dispersion of light",["Reflection only","Absorption","Diffraction only"],"Water drops split sunlight into colours."],
+["Twinkling of stars is due to:","Refraction of light",["Reflection","Dispersion","Interference"],"Air layers bend starlight unevenly."],
+["A mirage is caused by:","Total internal reflection",["Dispersion","Scattering","Polarisation"],"Hot air layers totally reflect light near the ground."],
+["The best conductor of electricity among the following is:","Silver",["Copper","Aluminium","Iron"],"Silver has the highest electrical conductivity."],
+["A fuse wire should have:","Low melting point",["High melting point","High resistance to heat","Zero resistance"],"The fuse melts and breaks the circuit when current is excessive."],
+["A transformer works only on:","Alternating current",["Direct current","Both AC and DC","Static charge"],"Transformers need a changing magnetic field, so AC only."],
+["The frequency of AC supply in Pakistan is:","50 Hz",["60 Hz","100 Hz","220 Hz"],"Pakistan uses 50 Hz, 220-240 V supply."],
+["The period of a simple pendulum depends on its:","Length",["Mass of bob","Amplitude only","Colour of string"],"T depends on length and gravity, not on mass."],
+["When a ball thrown upward reaches its highest point, its velocity is:","Zero",["Maximum","Equal to gravity","Constant"],"At the top it stops for an instant before falling."],
+["Centripetal force always acts:","Towards the centre",["Outwards","Along the tangent","Downwards"],"Centripetal means centre-seeking."],
+["Newton's first law of motion is also called the law of:","Inertia",["Action-reaction","Momentum","Gravitation"],"Bodies resist change in their state of motion."],
+["According to the law of conservation of energy, energy:","Cannot be created or destroyed",["Can be created freely","Is lost as heat always","Depends on mass only"],"Energy only changes form."],
+["The escape velocity of Earth is about:","11.2 km/s",["7.9 km/s","9.8 km/s","3 km/s"],"11.2 km/s is needed to escape Earth's gravity."],
+["Water has maximum density at:","4 degrees C",["0 degrees C","100 degrees C","25 degrees C"],"Water is densest at 4 degrees C."],
+["As we go deeper in a liquid, pressure:","Increases",["Decreases","Stays the same","Becomes zero"],"Pressure = density x g x depth."],
+["Hydraulic machines work on the principle of:","Pascal's law",["Archimedes' principle","Bernoulli's principle","Hooke's law"],"Pressure applied to enclosed liquid is transmitted equally."],
+["Heat can travel through vacuum by:","Radiation",["Conduction","Convection","Friction"],"Radiation needs no medium."],
+["Sea breeze is caused by:","Convection",["Conduction","Radiation","Tides"],"Unequal heating of land and sea sets up convection currents."],
+["A black surface is a good:","Absorber of radiation",["Reflector of radiation","Insulator always","Conductor of sound"],"Dark surfaces absorb and emit radiation best."],
+["The boiling point of water at sea level is:","100 degrees C",["90 degrees C","110 degrees C","80 degrees C"],"At standard pressure water boils at 100 degrees C."],
+["Which instrument measures relative humidity?","Hygrometer",["Barometer","Thermometer","Anemometer"],"A hygrometer measures humidity."],
+["An anemometer measures:","Wind speed",["Air pressure","Rainfall","Humidity"],"Anemometers measure wind speed."],
+["Kinetic energy of a body depends on its:","Mass and velocity",["Height only","Temperature","Volume only"],"KE = 1/2 mv^2."]];
+var PHYS_POOL=PHYS_RAW.map(function(p){return Q("Physics",p[0],p[1],p[2],p[3]);});
+function physNumeric(rng){
+  var out=[];var i,d,t,v,u,a2,f,m,w,p2,ke,pe,V,I,R,rho,vol,fr,lam;
+  for(i=0;i<4;i++){ d=20+10*Math.floor(rng()*28); t=2+Math.floor(rng()*8); if(d%t!==0){d=t*(4+Math.floor(rng()*20));} v=d/t;
+    out.push(Q("Physics","A vehicle covers "+d+" m in "+t+" s. Its average speed is:",v+" m/s",[(v+2)+" m/s",(v>2?v-2:v+5)+" m/s",(v*2)+" m/s"],"Speed = distance / time = "+d+" / "+t+" = "+v+" m/s.")); }
+  for(i=0;i<3;i++){ u=2*Math.floor(rng()*6); v=u+2*(2+Math.floor(rng()*5)); t=2+Math.floor(rng()*4); a2=(v-u)/t;
+    out.push(Q("Physics","A body changes its velocity from "+u+" m/s to "+v+" m/s in "+t+" s. Its acceleration is:",a2+" m/s^2",[(a2+1)+" m/s^2",(a2+2)+" m/s^2",Math.max(1,a2-1)+" m/s^2"],"a = (v - u) / t = ("+v+" - "+u+") / "+t+" = "+a2+" m/s^2.")); }
+  for(i=0;i<4;i++){ m=2+Math.floor(rng()*9); a2=2+Math.floor(rng()*8); f=m*a2;
+    out.push(Q("Physics","What force is needed to accelerate a mass of "+m+" kg at "+a2+" m/s^2?",f+" N",[(f+m)+" N",(f+a2)+" N",Math.max(1,f-a2)+" N"],"F = ma = "+m+" x "+a2+" = "+f+" N.")); }
+  for(i=0;i<3;i++){ f=5*(2+Math.floor(rng()*8)); d=2+Math.floor(rng()*9); w=f*d;
+    out.push(Q("Physics","A force of "+f+" N moves an object "+d+" m in its own direction. The work done is:",w+" J",[(w+f)+" J",(w+10)+" J",Math.max(5,w-f)+" J"],"W = F x d = "+f+" x "+d+" = "+w+" J.")); }
+  for(i=0;i<3;i++){ w=60*(2+Math.floor(rng()*8)); t=10+10*Math.floor(rng()*5); p2=w/t;
+    out.push(Q("Physics","A machine does "+w+" J of work in "+t+" s. Its power is:",p2+" W",[(p2+2)+" W",(p2*2)+" W",Math.max(1,p2-2)+" W"],"P = W / t = "+w+" / "+t+" = "+p2+" W.")); }
+  for(i=0;i<3;i++){ m=2*(1+Math.floor(rng()*5)); v=2+Math.floor(rng()*6); ke=0.5*m*v*v;
+    out.push(Q("Physics","The kinetic energy of a "+m+" kg body moving at "+v+" m/s is:",ke+" J",[(ke+10)+" J",(m*v)+" J",(ke*2)+" J"],"KE = 1/2 mv^2 = 1/2 x "+m+" x "+(v*v)+" = "+ke+" J.")); }
+  for(i=0;i<3;i++){ m=1+Math.floor(rng()*9); var h=2+Math.floor(rng()*8); pe=m*10*h;
+    out.push(Q("Physics","Taking g = 10 m/s^2, the potential energy of a "+m+" kg mass raised "+h+" m is:",pe+" J",[(pe+10)+" J",(m*h)+" J",(pe*2)+" J"],"PE = mgh = "+m+" x 10 x "+h+" = "+pe+" J.")); }
+  for(i=0;i<4;i++){ I=1+Math.floor(rng()*9); R=2+Math.floor(rng()*11); V=I*R;
+    out.push(Q("Physics","A current of "+I+" A flows through a resistance of "+R+" ohms. The voltage across it is:",V+" V",[(V+I)+" V",(V+R)+" V",Math.max(1,V-R)+" V"],"V = IR = "+I+" x "+R+" = "+V+" V.")); }
+  for(i=0;i<3;i++){ m=20*(2+Math.floor(rng()*10)); vol=10*(1+Math.floor(rng()*5)); if(m%vol!==0){m=vol*(2+Math.floor(rng()*10));} rho=m/vol;
+    out.push(Q("Physics","A block of mass "+m+" g has volume "+vol+" cm^3. Its density is:",rho+" g/cm^3",[(rho+1)+" g/cm^3",(rho*2)+" g/cm^3",Math.max(1,rho-1)+" g/cm^3"],"Density = mass / volume = "+m+" / "+vol+" = "+rho+" g/cm^3.")); }
+  for(i=0;i<3;i++){ fr=2+Math.floor(rng()*9); lam=2+Math.floor(rng()*8); var wv=fr*lam;
+    out.push(Q("Physics","A wave has frequency "+fr+" Hz and wavelength "+lam+" m. Its speed is:",wv+" m/s",[(wv+fr)+" m/s",(fr+lam)+" m/s",Math.max(1,wv-lam)+" m/s"],"Wave speed = frequency x wavelength = "+fr+" x "+lam+" = "+wv+" m/s.")); }
+  for(i=0;i<3;i++){ m=2+Math.floor(rng()*20); var wt=m*10;
+    out.push(Q("Physics","Taking g = 10 m/s^2, the weight of a "+m+" kg mass is:",wt+" N",[(m)+" N",(wt+20)+" N",(wt-10)+" N"],"Weight = mg = "+m+" x 10 = "+wt+" N.")); }
+  return out;
+}
+</script>
+
+<script>
+"use strict";
+/* ================= EVERYDAY SCIENCE ================= */
+var SCI_RAW=[
+["Which gas do plants absorb from the air for photosynthesis?","Carbon dioxide",["Oxygen","Nitrogen","Hydrogen"],"Plants take in CO2 and release oxygen."],
+["Which gas is released by plants during photosynthesis?","Oxygen",["Carbon dioxide","Nitrogen","Carbon monoxide"],"Oxygen is the by-product of photosynthesis."],
+["The powerhouse of the cell is:","Mitochondria",["Nucleus","Ribosome","Golgi body"],"Mitochondria produce the cell's energy."],
+["The normal temperature of the human body is about:","37 degrees C",["35 degrees C","39 degrees C","40 degrees C"],"37 C equals 98.6 F."],
+["How many bones are there in an adult human body?","206",["226","306","186"],"An adult has 206 bones."],
+["The largest organ of the human body is:","Skin",["Liver","Heart","Brain"],"The skin is the largest organ."],
+["The universal blood donor group is:","O negative",["AB positive","A positive","B negative"],"O negative blood can be given to anyone."],
+["The universal blood recipient group is:","AB positive",["O negative","A negative","B positive"],"AB positive can receive from all groups."],
+["Which vitamin is produced in the skin in sunlight?","Vitamin D",["Vitamin A","Vitamin C","Vitamin B12"],"Sunlight helps the body make Vitamin D."],
+["Deficiency of Vitamin C causes:","Scurvy",["Rickets","Night blindness","Anaemia"],"Scurvy causes bleeding gums and weakness."],
+["Deficiency of iron in the body causes:","Anaemia",["Goitre","Scurvy","Beri-beri"],"Iron is needed to make haemoglobin."],
+["Deficiency of iodine causes:","Goitre",["Diabetes","Anaemia","Rickets"],"Iodine is essential for the thyroid gland."],
+["Night blindness is caused by deficiency of:","Vitamin A",["Vitamin C","Vitamin D","Vitamin K"],"Vitamin A is essential for vision."],
+["Insulin is produced by the:","Pancreas",["Liver","Kidney","Spleen"],"The pancreas secretes insulin."],
+["Insulin controls the level of ___ in the blood:","Sugar",["Salt","Calcium","Iron"],"Insulin regulates blood glucose."],
+["The most abundant gas in the Earth's atmosphere is:","Nitrogen",["Oxygen","Carbon dioxide","Argon"],"Nitrogen is about 78% of the air."],
+["Which metal is liquid at room temperature?","Mercury",["Iron","Aluminium","Copper"],"Mercury is used in thermometers."],
+["The hardest natural substance is:","Diamond",["Iron","Quartz","Graphite"],"Diamond is the hardest known natural material."],
+["The pH of a neutral solution is:","7",["0","1","14"],"Below 7 is acidic, above 7 is alkaline."],
+["Acids have a taste that is:","Sour",["Sweet","Bitter","Salty"],"For example, lemon juice is sour."],
+["Which organ filters and purifies the blood in the human body?","Kidney",["Heart","Lungs","Stomach"],"Kidneys remove waste from the blood."],
+["How many chambers does the human heart have?","Four",["Two","Three","Five"],"Two atria and two ventricles."],
+["The normal heartbeat of a healthy adult at rest is about ___ per minute:","72",["50","100","120"],"Average resting heart rate is about 72 bpm."],
+["The green pigment in plants is called:","Chlorophyll",["Haemoglobin","Melanin","Carotene"],"Chlorophyll traps sunlight for photosynthesis."],
+["Which vitamin helps in blood clotting?","Vitamin K",["Vitamin A","Vitamin B","Vitamin C"],"Vitamin K is needed for clot formation."],
+["The main source of energy for the Earth is:","The Sun",["The Moon","Wind","Oceans"],"Almost all Earth's energy comes from the Sun."],
+["The planet closest to the Sun is:","Mercury",["Venus","Mars","Earth"],"Mercury is the innermost planet."],
+["Which planet is known as the Red Planet?","Mars",["Venus","Jupiter","Saturn"],"Its reddish colour comes from iron oxide dust."],
+["The largest planet in our solar system is:","Jupiter",["Saturn","Neptune","Earth"],"Jupiter is more massive than all other planets combined."],
+["Typhoid is a disease caused by:","Bacteria",["Virus","Fungus","Protozoa"],"Typhoid is caused by Salmonella bacteria."],
+["Malaria is spread by:","Female Anopheles mosquito",["Housefly","Aedes mosquito","Sandfly"],"The parasite is carried by the Anopheles mosquito."],
+["Dengue fever is spread by:","Aedes mosquito",["Anopheles mosquito","Housefly","Tick"],"Aedes mosquitoes bite mainly in daytime."],
+["Laughing gas is chemically:","Nitrous oxide",["Nitric oxide","Nitrogen dioxide","Ammonia"],"N2O is called laughing gas."],
+["Dry ice is solid:","Carbon dioxide",["Oxygen","Nitrogen","Hydrogen"],"Dry ice sublimes directly into gas."],
+["The 'lead' of a pencil is actually made of:","Graphite",["Charcoal","Lead metal","Coal"],"Pencil cores are graphite mixed with clay."],
+["Melting of ice is an example of a:","Physical change",["Chemical change","Nuclear change","Irreversible change"],"No new substance is formed."],
+["Which part of the plant absorbs water from the soil?","Roots",["Leaves","Stem","Flower"],"Root hairs absorb water and minerals."],
+["Bats are classified as:","Mammals",["Birds","Reptiles","Amphibians"],"Bats give birth to young and feed them milk."],
+["Which animal is known as the ship of the desert?","Camel",["Horse","Donkey","Elephant"],"Camels are adapted to desert travel."],
+["Sound travels fastest through:","Solids",["Liquids","Gases","Vacuum"],"Particles are closest in solids."],
+["An instrument used to record earthquakes is:","Seismograph",["Barometer","Hygrometer","Altimeter"],"Seismographs record seismic waves."],
+["The study of living organisms is called:","Biology",["Geology","Astronomy","Botany only"],"Biology covers all living things."],
+["The study of the Earth is called:","Geology",["Biology","Zoology","Ecology"],"Geology studies rocks and Earth's structure."],
+["About what percentage of the human body is water?","About 70%",["About 30%","About 50%","About 90%"],"Textbooks put body water at roughly 60-70%."],
+["Which of these is a renewable source of energy?","Solar energy",["Coal","Natural gas","Petrol"],"Solar energy is naturally replenished."],
+["The chemical symbol of gold is:","Au",["Ag","Gd","Go"],"Au comes from the Latin 'aurum'."],
+["Which gas is essential for burning (combustion)?","Oxygen",["Nitrogen","Carbon dioxide","Hydrogen"],"Burning cannot occur without oxygen."],
+["The process by which plants make their food is called:","Photosynthesis",["Respiration","Digestion","Fermentation"],"Plants convert sunlight, water and CO2 into food."],
+["Which blood cells carry oxygen in the body?","Red blood cells",["White blood cells","Platelets","Plasma cells"],"Haemoglobin in RBCs carries oxygen."],
+["Which blood cells fight germs and infection?","White blood cells",["Red blood cells","Platelets","Nerve cells"],"WBCs are part of the immune system."],
+["The Moon is a natural ___ of the Earth:","Satellite",["Planet","Star","Comet"],"The Moon revolves around the Earth."],
+["Which vitamin is most abundant in citrus fruits like oranges and lemons?","Vitamin C",["Vitamin A","Vitamin D","Vitamin E"],"Citrus fruits are rich in Vitamin C."]];
+var SCI_POOL=SCI_RAW.map(function(p){return Q("Everyday Science",p[0],p[1],p[2],p[3]);});
+
+/* ================= CHEMISTRY ================= */
+var ELEMENTS=[["Sodium","Na","N","So","Sd"],["Potassium","K","P","Po","Pt"],["Iron","Fe","Ir","I","Fn"],["Gold","Au","Ag","Gd","Al"],["Silver","Ag","Au","Si","Sl"],["Lead","Pb","Ld","Le","Pl"],["Copper","Cu","Co","Cp","Cr"],["Mercury","Hg","Me","Mr","Hy"],["Tin","Sn","Ti","Tn","St"],["Zinc","Zn","Z","Zi","Zc"],["Hydrogen","H","Hy","He","Ho"],["Oxygen","O","Ox","Og","Om"],["Carbon","C","Ca","Co","Cr"],["Nitrogen","N","Ni","Na","Nt"],["Calcium","Ca","C","Cl","Cm"],["Chlorine","Cl","Ch","Ca","Cr"],["Sulphur","S","Su","Sl","Sp"],["Aluminium","Al","A","Am","Au"],["Helium","He","H","Hl","Hm"],["Magnesium","Mg","Ma","Mn","Md"]];
+var CHEM_POOL=ELEMENTS.map(function(e){return Q("Chemistry","What is the chemical symbol of "+e[0]+"?",e[1],[e[2],e[3],e[4]],"The symbol of "+e[0]+" is "+e[1]+".");});
+var FORMULAS=[["Water","H2O","HO2","H2O2","OH"],["Carbon dioxide","CO2","CO","C2O","Co2"],["Common salt","NaCl","NaCO3","KCl","NaOH"],["Sulphuric acid","H2SO4","HCl","HNO3","H2CO3"],["Hydrochloric acid","HCl","H2SO4","HF","HNO3"],["Nitric acid","HNO3","HNO2","NH3","HCl"],["Caustic soda (sodium hydroxide)","NaOH","KOH","NaCl","Na2CO3"],["Ammonia","NH3","NH4","NO2","N2H4"],["Methane","CH4","C2H6","CO2","CH3"],["Glucose","C6H12O6","C12H22O11","CH4","C2H5OH"],["Washing soda","Na2CO3","NaHCO3","NaOH","NaCl"],["Baking soda","NaHCO3","Na2CO3","CaCO3","KCl"],["Hydrogen peroxide","H2O2","H2O","HO","H3O"],["Carbon monoxide","CO","CO2","C2O","Co"],["Sulphur dioxide","SO2","SO3","S2O","H2S"],["Calcium carbonate (limestone)","CaCO3","CaO","Ca(OH)2","CaCl2"],["Quicklime","CaO","CaCO3","Ca(OH)2","CO2"],["Ethanol","C2H5OH","CH4","C6H12O6","NH3"]];
+CHEM_POOL=CHEM_POOL.concat(FORMULAS.map(function(f){return Q("Chemistry","What is the chemical formula of "+f[0]+"?",f[1],[f[2],f[3],f[4]],"The formula of "+f[0]+" is "+f[1]+".");}));
+var CHEM_RAW=[
+["The atomic number of carbon is:","6",["1","8","12"],"Carbon has 6 protons."],
+["The atomic number of hydrogen is:","1",["2","8","6"],"Hydrogen is the first element."],
+["The atomic number of oxygen is:","8",["6","16","1"],"Oxygen has 8 protons; its atomic mass is 16."],
+["The most abundant element in the universe is:","Hydrogen",["Oxygen","Carbon","Helium"],"About 74% of the universe's ordinary matter is hydrogen."],
+["The most abundant element in the Earth's crust is:","Oxygen",["Silicon","Iron","Hydrogen"],"Oxygen makes up about 46% of the crust."],
+["The lightest element is:","Hydrogen",["Helium","Lithium","Oxygen"],"Hydrogen has atomic number 1."],
+["A solution with pH less than 7 is:","Acidic",["Alkaline","Neutral","A salt"],"pH 7 is neutral; above 7 is alkaline."],
+["An acid turns blue litmus:","Red",["Green","Colourless","Yellow"],"This is the standard litmus test for acids."],
+["A base turns red litmus:","Blue",["Red","Green","Colourless"],"Bases restore litmus to blue."],
+["The direct change of a solid into gas is called:","Sublimation",["Evaporation","Condensation","Fusion"],"Camphor and dry ice sublime."],
+["The change of gas into liquid is called:","Condensation",["Evaporation","Sublimation","Melting"],"Dew forms by condensation."],
+["Which of the following is an example of sublimation?","Camphor",["Ice melting","Water boiling","Wax melting"],"Camphor passes directly from solid to vapour."],
+["A mixture of iron filings and sulphur can be separated by:","A magnet",["Filtration","Evaporation","Distillation"],"Iron is magnetic; sulphur is not."],
+["Salt is obtained from sea water by:","Evaporation",["Filtration","Sublimation","Condensation"],"Water evaporates leaving salt behind."],
+["Filtration is used to separate:","An insoluble solid from a liquid",["Two liquids","A soluble solid","Gases"],"The solid stays on the filter paper."],
+["Air is an example of a:","Mixture",["Compound","Element","Pure substance"],"Air contains many gases not chemically combined."],
+["Water is an example of a:","Compound",["Mixture","Element","Solution of gases"],"H2O is a chemical combination of hydrogen and oxygen."],
+["Which of the following is an element?","Oxygen",["Water","Air","Common salt"],"Oxygen cannot be broken into simpler substances."],
+["The nucleus of an atom was discovered by:","Rutherford",["Dalton","Bohr","Thomson"],"Rutherford's gold-foil experiment revealed the nucleus."],
+["The neutron was discovered by:","Chadwick",["Thomson","Dalton","Bohr"],"James Chadwick discovered the neutron in 1932."],
+["The atomic theory of matter was first given by:","Dalton",["Newton","Bohr","Einstein"],"John Dalton proposed it in 1808."],
+["Avogadro's number is approximately:","6.02 x 10^23",["6.02 x 10^20","1.6 x 10^-19","3 x 10^8"],"One mole contains 6.02 x 10^23 particles."],
+["The chemical formula of rust is commonly written as:","Fe2O3",["FeO","Fe3O4","FeS"],"Hydrated iron(III) oxide forms rust."],
+["Hard water contains salts of:","Calcium and magnesium",["Sodium and potassium","Iron and copper","Zinc and lead"],"These salts make lathering difficult."],
+["The main components of LPG are:","Propane and butane",["Methane and ethane","Hydrogen and oxygen","Carbon and nitrogen"],"LPG is liquefied petroleum gas."],
+["The main component of natural gas is:","Methane",["Ethane","Propane","Butane"],"Natural gas is mostly CH4."],
+["The acid present in vinegar is:","Acetic acid",["Citric acid","Sulphuric acid","Nitric acid"],"Vinegar is dilute acetic acid."],
+["The acid present in lemons is:","Citric acid",["Acetic acid","Hydrochloric acid","Tartaric acid"],"Citrus fruits contain citric acid."],
+["The acid used in car batteries is:","Sulphuric acid",["Nitric acid","Acetic acid","Citric acid"],"Lead-acid batteries use H2SO4."],
+["The common name of NaOH is:","Caustic soda",["Baking soda","Washing soda","Quicklime"],"NaOH is a strong alkali."],
+["How many electrons are there in a neutral atom with atomic number 11?","11",["10","12","23"],"In a neutral atom, electrons equal protons."],
+["The smallest particle of an element that keeps its properties is:","Atom",["Molecule","Ion","Electron"],"Atoms are the building blocks of elements."],
+["The smallest particle of a compound that can exist independently is:","Molecule",["Atom","Proton","Neutron"],"Molecules are groups of bonded atoms."],
+["Which gas is produced when an acid reacts with a metal carbonate?","Carbon dioxide",["Hydrogen","Oxygen","Nitrogen"],"This is the standard test using limewater."],
+["Which gas is produced when a reactive metal reacts with a dilute acid?","Hydrogen",["Oxygen","Carbon dioxide","Chlorine"],"For example, zinc + HCl gives hydrogen."]];
+CHEM_POOL=CHEM_POOL.concat(CHEM_RAW.map(function(p){return Q("Chemistry",p[0],p[1],p[2],p[3]);}));
+
+/* ================= GK / PAK STUDIES ================= */
+var GK_RAW=[
+["The capital of Pakistan is:","Islamabad",["Karachi","Lahore","Rawalpindi"],"Islamabad became the capital in the 1960s."],
+["The national language of Pakistan is:","Urdu",["Punjabi","Sindhi","English"],"Urdu is the national language; English is official."],
+["The national anthem of Pakistan was written by:","Hafeez Jalandhari",["Allama Iqbal","Faiz Ahmed Faiz","Josh Malihabadi"],"Hafeez Jalandhari wrote the Qaumi Tarana."],
+["The national poet of Pakistan is:","Allama Muhammad Iqbal",["Mirza Ghalib","Hafeez Jalandhari","Ahmed Faraz"],"Iqbal is called Shair-e-Mashriq."],
+["The founder of Pakistan is:","Quaid-e-Azam Muhammad Ali Jinnah",["Allama Iqbal","Liaquat Ali Khan","Sir Syed Ahmed Khan"],"Jinnah led the Pakistan Movement."],
+["The first Governor General of Pakistan was:","Muhammad Ali Jinnah",["Liaquat Ali Khan","Khawaja Nazimuddin","Ghulam Muhammad"],"Jinnah served from 1947 to 1948."],
+["The first Prime Minister of Pakistan was:","Liaquat Ali Khan",["Muhammad Ali Jinnah","Hussain Shaheed Suhrawardy","Zulfikar Ali Bhutto"],"Liaquat served until his assassination in 1951."],
+["Pakistan came into being on:","14 August 1947",["15 August 1947","23 March 1940","14 August 1948"],"Independence was gained from British rule in 1947."],
+["The Objectives Resolution was passed in:","1949",["1947","1956","1973"],"It was passed on 12 March 1949."],
+["The first constitution of Pakistan was enforced in:","1956",["1949","1962","1973"],"The 1956 constitution made Pakistan a republic."],
+["The Constitution of 1973 was enforced on:","14 August 1973",["23 March 1973","1 July 1973","14 August 1972"],"It is the current constitution of Pakistan."],
+["The Lahore Resolution (Pakistan Resolution) was passed on:","23 March 1940",["14 August 1947","3 June 1947","11 August 1947"],"It was adopted at Minto Park, Lahore."],
+["The All-India Muslim League was founded in:","1906",["1885","1920","1940"],"It was founded in Dhaka in December 1906."],
+["The national game of Pakistan is:","Hockey",["Cricket","Football","Squash"],"Pakistan has won multiple hockey World Cups and Olympic golds."],
+["The national flower of Pakistan is:","Jasmine",["Rose","Tulip","Sunflower"],"Jasmine (Chambeli) is the national flower."],
+["The national animal of Pakistan is:","Markhor",["Snow leopard","Indus dolphin","Lion"],"The markhor is a wild goat of the northern mountains."],
+["The national bird of Pakistan is:","Chakor",["Peacock","Hoopoe","Eagle"],"The chakor partridge is the national bird."],
+["The largest province of Pakistan by area is:","Balochistan",["Punjab","Sindh","Khyber Pakhtunkhwa"],"Balochistan covers about 44% of Pakistan's area."],
+["The largest province of Pakistan by population is:","Punjab",["Sindh","Balochistan","Khyber Pakhtunkhwa"],"Punjab holds more than half the population."],
+["The largest city of Pakistan is:","Karachi",["Lahore","Faisalabad","Islamabad"],"Karachi is the biggest city and main port."],
+["The highest peak of Pakistan is:","K2",["Nanga Parbat","Rakaposhi","Tirich Mir"],"K2 is 8,611 m high."],
+["K2 is the ___ highest mountain in the world:","Second",["First","Third","Fourth"],"Only Everest is higher than K2."],
+["The longest river of Pakistan is:","Indus",["Jhelum","Chenab","Beas"],"The Indus is about 3,180 km long."],
+["Pakistan shares its longest border with:","Afghanistan",["India","Iran","China"],"The Pakistan-Afghanistan border is about 2,640 km."],
+["The Durand Line is the border between Pakistan and:","Afghanistan",["India","Iran","China"],"It was drawn in 1893."],
+["Pakistan conducted its nuclear tests in:","1998",["1974","1988","2001"],"Tests were carried out at Chagai on 28 May 1998."],
+["The nuclear tests of Pakistan were conducted at:","Chagai",["Thar","Kahuta","Multan"],"Chagai is in Balochistan."],
+["The first female Prime Minister of Pakistan was:","Benazir Bhutto",["Fatima Jinnah","Hina Rabbani Khar","Maryam Nawaz"],"Benazir Bhutto became PM in 1988."],
+["The highest military award of Pakistan is:","Nishan-e-Haider",["Hilal-e-Imtiaz","Sitara-e-Jurat","Tamgha-e-Imtiaz"],"Nishan-e-Haider is awarded for supreme gallantry."],
+["Pakistan became a member of the United Nations in:","1947",["1945","1950","1956"],"Pakistan joined the UN on 30 September 1947."],
+["The State Bank of Pakistan was established in:","1948",["1947","1951","1956"],"It was inaugurated by Quaid-e-Azam in July 1948."],
+["The first census of Pakistan was held in:","1951",["1947","1961","1972"],"The first census counted about 75 million people."],
+["The first month of the Islamic calendar is:","Muharram",["Ramadan","Rajab","Safar"],"The Hijri year begins with Muharram."],
+["The last month of the Islamic calendar is:","Zilhajj",["Shawwal","Muharram","Rabi-ul-Awwal"],"Hajj is performed in Zilhajj."],
+["The first Surah of the Holy Quran is:","Al-Fatiha",["Al-Baqarah","Yaseen","Al-Ikhlas"],"Al-Fatiha is called the opening chapter."],
+["The longest Surah of the Holy Quran is:","Al-Baqarah",["Aal-e-Imran","An-Nisa","Al-Maida"],"Al-Baqarah has 286 verses."],
+["The total number of Surahs in the Holy Quran is:","114",["110","116","120"],"The Quran has 114 Surahs."],
+["The total number of Paras (Juz) in the Holy Quran is:","30",["25","40","114"],"The Quran is divided into 30 equal parts."],
+["The first Prophet of Islam was:","Hazrat Adam (AS)",["Hazrat Noah (AS)","Hazrat Ibrahim (AS)","Hazrat Musa (AS)"],"Hazrat Adam (AS) was the first human and prophet."],
+["The Holy Quran was revealed in the month of:","Ramadan",["Muharram","Shaban","Rajab"],"The first revelation came in Ramadan."],
+["The first major battle of Islam, Badr, was fought in:","2 Hijri",["1 Hijri","3 Hijri","5 Hijri"],"Badr was fought in 624 AD."],
+["How many Muslims fought in the Battle of Badr?","313",["1000","700","500"],"313 Muslims faced about 1,000 Quraysh."],
+["Makkah was conquered by the Muslims in:","8 Hijri",["6 Hijri","10 Hijri","2 Hijri"],"The conquest of Makkah was largely peaceful."],
+["The first Caliph of Islam was:","Hazrat Abu Bakr (RA)",["Hazrat Umar (RA)","Hazrat Usman (RA)","Hazrat Ali (RA)"],"He succeeded the Holy Prophet (PBUH) in 632 AD."],
+["The second Caliph of Islam was:","Hazrat Umar (RA)",["Hazrat Abu Bakr (RA)","Hazrat Usman (RA)","Hazrat Ali (RA)"],"His caliphate lasted about ten years."],
+["How many pillars of Islam are there?","Five",["Four","Six","Seven"],"Shahada, Salah, Zakat, Sawm and Hajj."],
+["The capital of Japan is:","Tokyo",["Beijing","Seoul","Bangkok"],"Tokyo is Japan's capital and largest city."],
+["The capital of Australia is:","Canberra",["Sydney","Melbourne","Perth"],"Canberra is the purpose-built capital."],
+["The capital of Canada is:","Ottawa",["Toronto","Vancouver","Montreal"],"Ottawa is in Ontario province."],
+["The capital of Turkey is:","Ankara",["Istanbul","Izmir","Antalya"],"Ankara became capital in 1923."],
+["The capital of Saudi Arabia is:","Riyadh",["Jeddah","Makkah","Madina"],"Riyadh is the political and administrative capital."],
+["The capital of China is:","Beijing",["Shanghai","Hong Kong","Taipei"],"Beijing has been China's capital for centuries."],
+["The largest continent of the world is:","Asia",["Africa","Europe","North America"],"Asia covers about 30% of Earth's land."],
+["The smallest continent of the world is:","Australia",["Europe","Antarctica","Africa"],"Australia is the smallest continent."],
+["The largest ocean of the world is:","Pacific Ocean",["Atlantic Ocean","Indian Ocean","Arctic Ocean"],"The Pacific covers about a third of Earth's surface."],
+["The longest river in the world is:","Nile",["Amazon","Yangtze","Indus"],"The Nile is about 6,650 km long."],
+["The currency of Japan is:","Yen",["Won","Yuan","Ringgit"],"Japan's currency is the yen."],
+["The currency of the United Kingdom is:","Pound sterling",["Euro","Dollar","Franc"],"The UK uses pounds and pence."],
+["The first man to set foot on the Moon was:","Neil Armstrong",["Yuri Gagarin","Buzz Aldrin","Michael Collins"],"Apollo 11 landed in July 1969."],
+["The first Moon landing took place in:","1969",["1961","1975","1959"],"Apollo 11 landed on 20 July 1969."],
+["The headquarters of the United Nations is in:","New York",["Geneva","Paris","London"],"The UN secretariat is in New York City."],
+["The United Nations was founded in:","1945",["1919","1939","1950"],"The UN Charter was signed in San Francisco in 1945."],
+["The Olympic Games are held every:","Four years",["Two years","Three years","Five years"],"Both Summer and Winter cycles run on four years."],
+["Pakistan won the Cricket World Cup in:","1992",["1987","1996","2003"],"Pakistan beat England in the 1992 final at Melbourne."],
+["Pakistan won the ICC T20 World Cup in:","2009",["2007","2010","2012"],"Pakistan beat Sri Lanka in the 2009 final at Lord's."],
+["The Sahara is the largest ___ in the world:","Hot desert",["Cold desert","Forest","Plain"],"The Sahara covers much of North Africa."],
+["Which country has the largest population in the world?","India",["China","USA","Indonesia"],"India overtook China in population in 2023."],
+["The Great Wall is located in:","China",["Japan","Korea","Mongolia"],"It stretches over 21,000 km."],
+["Waterloo, the famous battle of 1815, was fought in present-day:","Belgium",["France","Germany","Netherlands"],"Napoleon was defeated at Waterloo in Belgium."]];
+var GK_POOL=GK_RAW.map(function(p){return Q("GK & Pak Studies",p[0],p[1],p[2],p[3]);});
+
+/* ================= MATHEMATICS (procedural) ================= */
+function uniqOpts(correct,cands){var seen={};var out=[];seen[String(correct)]=1;for(var i=0;i<cands.length;i++){var c=cands[i];if(!seen[String(c)]&&c!==correct){seen[String(c)]=1;out.push(c);}if(out.length===3)break;}var k=2;while(out.length<3){var v=correct+k;k++;if(!seen[String(v)]){seen[String(v)]=1;out.push(v);}}return out;}
+function mathGen(rng){
+  var type=Math.floor(rng()*16);var q,ans,exp,cands;
+  function R(a,b){return a+Math.floor(rng()*(b-a+1));}
+  if(type===0){var p=[5,10,12,15,20,25,30,40,50,60,75][R(0,10)];var n=20*R(2,30);ans=p*n/100;q="What is "+p+"% of "+n+"?";exp=p+"% of "+n+" = "+p+"/100 x "+n+" = "+ans+".";cands=[ans+R(2,10),ans-R(2,8),ans+20];}
+  else if(type===1){var a=R(4,40),b=R(4,40),c=R(4,40),d2=R(4,40);var s=a+b+c+d2;ans=s/4;if(s%4!==0){d2+=4-(s%4);s=a+b+c+d2;ans=s/4;}q="Find the average of "+a+", "+b+", "+c+" and "+d2+".";exp="Sum = "+s+"; Average = "+s+" / 4 = "+ans+".";cands=[ans+2,ans-1,ans+5];}
+  else if(type===2){var r1=R(1,6),r2=R(1,6);var unit=50*R(2,12);var total=unit*(r1+r2);ans=unit*r1;q="Divide Rs "+total+" between A and B in the ratio "+r1+" : "+r2+". What is A's share?";exp="Total parts = "+(r1+r2)+"; one part = Rs "+unit+"; A's share = "+r1+" x "+unit+" = Rs "+ans+".";cands=[unit*r2,ans+50,ans-50];}
+  else if(type===3){var cp=100*R(2,20);var pp=[5,10,15,20,25][R(0,4)];ans=cp+cp*pp/100;q="An article is bought for Rs "+cp+" and sold at a profit of "+pp+"%. What is the selling price?";exp="Profit = "+pp+"% of "+cp+" = Rs "+(cp*pp/100)+"; SP = Rs "+ans+".";cands=[cp-cp*pp/100,ans+10,ans-20];}
+  else if(type===4){var cp2=100*R(2,20);var lp=[5,10,15,20][R(0,3)];ans=cp2-cp2*lp/100;q="A shopkeeper buys a radio for Rs "+cp2+" and sells it at a loss of "+lp+"%. What is the selling price?";exp="Loss = "+lp+"% of "+cp2+" = Rs "+(cp2*lp/100)+"; SP = Rs "+ans+".";cands=[cp2+cp2*lp/100,ans-10,ans+30];}
+  else if(type===5){var P=1000*R(1,10);var Rt=[4,5,6,8,10][R(0,4)];var T=R(1,4);ans=P*Rt*T/100;q="Find the simple interest on Rs "+P+" at "+Rt+"% per annum for "+T+" years.";exp="SI = PRT/100 = "+P+" x "+Rt+" x "+T+" / 100 = Rs "+ans+".";cands=[ans+100,ans-100,ans*2];}
+  else if(type===6){var sp=[20,25,30,40,50,60][R(0,5)];var tm=R(2,9);ans=sp*tm;q="A train runs at "+sp+" km/h. How far will it travel in "+tm+" hours?";exp="Distance = speed x time = "+sp+" x "+tm+" = "+ans+" km.";cands=[ans+sp,ans-sp,sp+tm];}
+  else if(type===7){var base=50*R(2,20);var pc=[10,20,25,50][R(0,3)];ans=base+base*pc/100;q="The price of a book is Rs "+base+". It increases by "+pc+"%. What is the new price?";exp="Increase = Rs "+(base*pc/100)+"; new price = Rs "+ans+".";cands=[base-base*pc/100,ans+10,ans-10];}
+  else if(type===8){var pct=[10,20,25,50][R(0,3)];var part=10*R(2,20);ans=part*100/pct;q=pct+"% of a number is "+part+". What is the number?";exp="Number = "+part+" x 100 / "+pct+" = "+ans+".";cands=[ans+10,ans-10,part*pct/10];}
+  else if(type===9){var x=R(5,40);var y=R(3,x-1);ans=x;q="The sum of two numbers is "+(x+y)+" and their difference is "+(x-y)+". What is the larger number?";exp="Larger number = (sum + difference) / 2 = ("+(x+y)+" + "+(x-y)+") / 2 = "+x+".";cands=[y,x+2,x-3];}
+  else if(type===10){var sq=[11,12,13,14,15,16,17,18,19,20,25,30][R(0,11)];ans=sq*sq;q="What is the value of "+sq+"^2 (i.e. "+sq+" x "+sq+")?";exp=sq+" x "+sq+" = "+ans+".";cands=[ans+sq,ans-sq,sq*10];}
+  else if(type===11){var st=R(2,20);var df=[3,4,5,6,7][R(0,4)];var nth=R(5,9);ans=st+(nth-1)*df;q="Find the "+nth+"th term of the series: "+st+", "+(st+df)+", "+(st+2*df)+", "+(st+3*df)+", ...";exp="Common difference = "+df+"; term "+nth+" = "+st+" + "+(nth-1)+" x "+df+" = "+ans+".";cands=[ans+df,ans-df,ans+2*df];}
+  else if(type===12){var men=R(4,10);var days=R(6,15);var men2=men+R(2,6);if((men*days)%men2!==0){men2=men*2;}ans=men*days/men2;q="If "+men+" men can finish a piece of work in "+days+" days, in how many days can "+men2+" men finish the same work?";exp="Total work = "+men+" x "+days+" man-days; days needed = "+(men*days)+" / "+men2+" = "+ans+".";cands=[ans+2,ans-1,ans+4];}
+  else if(type===13){var son=R(5,15);var mult=[3,4,5][R(0,2)];ans=mult*son;q="A father is "+mult+" times as old as his son. If the son is "+son+" years old, how old is the father?";exp="Father's age = "+mult+" x "+son+" = "+ans+" years.";cands=[son+mult,ans-5,ans+10];}
+  else if(type===14){var mp=100*R(3,15);var dp=[10,20,25,30,40,50][R(0,5)];ans=mp-mp*dp/100;q="A jacket is marked at Rs "+mp+". After a discount of "+dp+"%, what does the customer pay?";exp="Discount = Rs "+(mp*dp/100)+"; price paid = Rs "+ans+".";cands=[mp*dp/100,ans+20,ans-30];}
+  else{var L=R(5,20);var W=R(3,12);ans=L*W;q="What is the area of a rectangle whose length is "+L+" cm and width is "+W+" cm?";exp="Area = length x width = "+L+" x "+W+" = "+ans+" cm^2.";cands=[2*(L+W),ans+L,ans-W];}
+  var wrongs=uniqOpts(ans,cands);
+  return Q("Basic Mathematics",q,String(ans),wrongs.map(String),exp);
+}
+</script>
+
+<script>
+"use strict";
+/* ================= APP LOGIC ================= */
+var PASSWORD="ueptestbymk";
+var DIST=[["English",30],["Physics",20],["Everyday Science",15],["Chemistry",10],["Basic Mathematics",15],["GK & Pak Studies",10]];
+var unlocked=false;
+var bestScores={};
+var state=null;
+var lastResult=null;
+var submitArmed=false,submitArmTimer=null,quitArmed=false,quitArmTimer=null;
+
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function homeSections(){return document.querySelectorAll(".wrap > section.block");}
+function showHome(show){homeSections().forEach(function(s){s.style.display=show?"":"none";});}
+
+function poolFor(subject,rng){
+  if(subject==="English")return ENG_POOL;
+  if(subject==="Physics")return PHYS_POOL.concat(physNumeric(mulberry32(5000+state.testNo*131)));
+  if(subject==="Everyday Science")return SCI_POOL;
+  if(subject==="Chemistry")return CHEM_POOL;
+  if(subject==="GK & Pak Studies")return GK_POOL;
+  return [];
+}
+function buildTest(testNo){
+  var rng=mulberry32(testNo*1234567+89);
+  var qs=[];
+  state={testNo:testNo};
+  DIST.forEach(function(d){
+    var subject=d[0],count=d[1],picked,i;
+    if(subject==="Basic Mathematics"){picked=[];for(i=0;i<count;i++)picked.push(mathGen(rng));}
+    else{picked=shuffle(poolFor(subject,rng),rng).slice(0,count);}
+    picked.forEach(function(item){
+      var opts=shuffle([item.correct].concat(item.wrongs),rng);
+      qs.push({subject:subject,q:item.q,options:opts,answer:opts.indexOf(item.correct),exp:item.exp});
+    });
+  });
+  return qs;
+}
+
+/* ---------- Library ---------- */
+function renderLibrary(){
+  var grid=$("testGrid");grid.innerHTML="";
+  for(var n=1;n<=10;n++){
+    (function(n){
+      var card=document.createElement("div");card.className="test-card"+(unlocked?"":" locked");
+      var best=bestScores[n];
+      card.innerHTML='<div class="num">'+String(n).padStart(2,"0")+'</div><h3>Mock Test '+n+'</h3>'+
+        '<p>Full-length paper on the NTS pattern with a fresh mix of questions in every section.</p>'+
+        '<div class="meta"><span class="tag">100 MCQs</span><span class="tag">90 min</span><span class="tag">100 marks</span></div>'+
+        (best!==undefined?'<div class="best">Best score: '+best+' / 100</div>':'')+
+        '<button class="btn btn-navy" type="button" '+(unlocked?"":"disabled")+'>'+(unlocked?"Start Test":"Locked")+'</button>';
+      card.querySelector("button").addEventListener("click",function(){startTest(n);});
+      grid.appendChild(card);
+    })(n);
+  }
+}
+
+/* ---------- Gate ---------- */
+function tryUnlock(){
+  var val=$("pwInput").value.trim();
+  if(val===PASSWORD){
+    unlocked=true;$("pwError").classList.remove("show");
+    $("gateForm").classList.add("hidden");$("unlockedBanner").classList.add("show");
+    renderLibrary();
+    $("library").scrollIntoView({behavior:"smooth",block:"start"});
+  }else{
+    $("pwError").classList.add("show");
+  }
+}
+$("pwBtn").addEventListener("click",tryUnlock);
+$("pwInput").addEventListener("keydown",function(e){if(e.key==="Enter")tryUnlock();});
+$("lockBtn").addEventListener("click",function(){
+  unlocked=false;$("pwInput").value="";
+  $("gateForm").classList.remove("hidden");$("unlockedBanner").classList.remove("show");
+  renderLibrary();
+});
+
+/* ---------- Runner ---------- */
+function startTest(n){
+  if(!unlocked)return;
+  var qs=buildTest(n);
+  state={testNo:n,questions:qs,answers:new Array(qs.length).fill(null),marked:new Array(qs.length).fill(false),
+    current:0,timeLeft:90*60,submitted:false,startedAt:Date.now(),timerId:null};
+  submitArmed=false;quitArmed=false;
+  $("submitBtn").textContent="Submit Test";$("submitBtnTop").textContent="Submit Test";$("quitBtn").textContent="Quit";
+  showHome(false);$("result").style.display="none";$("runner").style.display="block";
+  $("runnerTitle").textContent="Mock Test "+n+" — UEP (NTS Pattern)";
+  buildPalette();renderQuestion();startTimer();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function startTimer(){
+  updateTimer();
+  state.timerId=setInterval(function(){
+    state.timeLeft--;
+    if(state.timeLeft<=0){state.timeLeft=0;updateTimer();finishTest(true);return;}
+    updateTimer();
+  },1000);
+}
+function updateTimer(){
+  if(!state)return;
+  var m=Math.floor(state.timeLeft/60),s=state.timeLeft%60;
+  var el=$("timer");el.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  el.classList.toggle("warn",state.timeLeft<=300);
+}
+function buildPalette(){
+  var pg=$("pgrid");pg.innerHTML="";
+  state.questions.forEach(function(_,i){
+    var b=document.createElement("button");b.type="button";b.className="pbtn";b.textContent=i+1;
+    b.setAttribute("aria-label","Go to question "+(i+1));
+    b.addEventListener("click",function(){state.current=i;renderQuestion();});
+    pg.appendChild(b);
+  });
+}
+function renderQuestion(){
+  var i=state.current,q=state.questions[i];
+  $("qSubject").textContent=q.subject;
+  $("qNumber").textContent="Question "+(i+1)+" of "+state.questions.length;
+  $("qMarkState").textContent=state.marked[i]?"Marked for review":"Not marked";
+  $("qText").textContent=q.q;
+  var box=$("qOpts");box.innerHTML="";
+  q.options.forEach(function(opt,oi){
+    var b=document.createElement("button");b.type="button";
+    b.className="opt"+(state.answers[i]===oi?" sel":"");
+    b.innerHTML='<span class="letter">'+"ABCD"[oi]+'</span><span>'+esc(opt)+'</span>';
+    b.addEventListener("click",function(){state.answers[i]=oi;renderQuestion();});
+    box.appendChild(b);
+  });
+  $("prevBtn").disabled=(i===0);
+  $("nextBtn").disabled=(i===state.questions.length-1);
+  $("markBtn").textContent=state.marked[i]?"Unmark question":"Mark for review";
+  var answered=state.answers.filter(function(a){return a!==null;}).length;
+  $("answeredCount").textContent=answered+" / "+state.questions.length+" answered";
+  $("progressFill").style.width=(answered/state.questions.length*100)+"%";
+  var btns=$("pgrid").children;
+  for(var k=0;k<btns.length;k++){
+    btns[k].className="pbtn"+(state.answers[k]!==null?" answered":"")+(state.marked[k]?" marked":"")+(k===i?" current":"");
+  }
+}
+$("prevBtn").addEventListener("click",function(){if(state.current>0){state.current--;renderQuestion();}});
+$("nextBtn").addEventListener("click",function(){if(state.current<state.questions.length-1){state.current++;renderQuestion();}});
+$("markBtn").addEventListener("click",function(){state.marked[state.current]=!state.marked[state.current];renderQuestion();});
+$("clearBtn").addEventListener("click",function(){state.answers[state.current]=null;renderQuestion();});
+$("quitBtn").addEventListener("click",function(){
+  if(!quitArmed){quitArmed=true;$("quitBtn").textContent="Tap again to quit";
+    quitArmTimer=setTimeout(function(){quitArmed=false;$("quitBtn").textContent="Quit";},3500);return;}
+  clearTimeout(quitArmTimer);clearInterval(state.timerId);state=null;
+  $("runner").style.display="none";showHome(true);renderLibrary();
+  $("library").scrollIntoView({behavior:"smooth"});
+});
+function armSubmit(un){
+  submitArmed=true;
+  var label="Submit with "+un+" unanswered? Tap again";
+  $("submitBtn").textContent=label;$("submitBtnTop").textContent=label;
+  submitArmTimer=setTimeout(function(){submitArmed=false;$("submitBtn").textContent="Submit Test";$("submitBtnTop").textContent="Submit Test";},4000);
+}
+function requestSubmit(){
+  if(!state||state.submitted)return;
+  var un=state.answers.filter(function(a){return a===null;}).length;
+  if(un>0&&!submitArmed){armSubmit(un);return;}
+  clearTimeout(submitArmTimer);finishTest(false);
+}
+$("submitBtn").addEventListener("click",requestSubmit);
+$("submitBtnTop").addEventListener("click",requestSubmit);
+
+function finishTest(auto){
+  if(!state||state.submitted)return;
+  state.submitted=true;clearInterval(state.timerId);
+  var qs=state.questions,score=0;
+  var per={};DIST.forEach(function(d){per[d[0]]={got:0,total:d[1]};});
+  qs.forEach(function(q,i){
+    if(state.answers[i]===q.answer){score++;per[q.subject].got++;}
+  });
+  var usedSec=90*60-state.timeLeft;
+  lastResult={testNo:state.testNo,questions:qs,answers:state.answers.slice(),score:score,per:per,usedSec:usedSec,auto:auto};
+  if(bestScores[state.testNo]===undefined||score>bestScores[state.testNo])bestScores[state.testNo]=score;
+  $("runner").style.display="none";
+  renderResult();
+  $("result").style.display="block";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderResult(){
+  var r=lastResult;
+  $("resTestName").textContent="Mock Test "+r.testNo+(r.auto?" — time ended, auto-submitted":" — submitted");
+  $("resScore").textContent=r.score+" / 100";
+  var pct=r.score;
+  $("resVerdict").textContent=pct>=80?"Excellent — test-ready performance":pct>=65?"Very good — a little polish will push you higher":pct>=50?"Fair — you are around the pass range, keep practising":"Keep practising — review the answers below and try again";
+  $("resVerdict").style.color=pct>=50?"var(--teal)":"var(--red)";
+  var mm=Math.floor(r.usedSec/60),ss=r.usedSec%60;
+  var attempted=r.answers.filter(function(a){return a!==null;}).length;
+  $("resMeta").textContent="Attempted "+attempted+" of 100 questions · Time used "+mm+" min "+ss+" sec · "+pct+"% score";
+  var sb=$("secBreak");sb.innerHTML="";
+  DIST.forEach(function(d){
+    var p=r.per[d[0]];var pc=Math.round(p.got/p.total*100);
+    var div=document.createElement("div");div.className="card";
+    div.innerHTML="<span>"+esc(d[0])+"</span><b>"+p.got+" / "+p.total+"</b><div class='bar'><i style='width:"+pc+"%'></i></div>";
+    sb.appendChild(div);
+  });
+  renderReview("all");
+}
+function renderReview(filter){
+  var r=lastResult,list=$("reviewList");list.innerHTML="";
+  var shown=0;
+  r.questions.forEach(function(q,i){
+    var a=r.answers[i];
+    var status=a===null?"skipped":(a===q.answer?"correct":"wrong");
+    if(filter!=="all"&&filter!==status)return;
+    shown++;
+    var div=document.createElement("div");div.className="review-item";
+    div.innerHTML='<p class="rq">'+(i+1)+". "+esc(q.q)+' <span class="tag soft">'+esc(q.subject)+'</span></p>'+
+      (a===null?'<p class="ra bad">Your answer: Not answered</p>':'<p class="ra '+(status==="correct"?"ok":"bad")+'">Your answer: '+esc(q.options[a])+(status==="correct"?" ✓":" ✗")+'</p>')+
+      '<p class="ra ok">Correct answer: '+esc(q.options[q.answer])+'</p>'+
+      (q.exp?'<p class="exp">'+esc(q.exp)+'</p>':'');
+    list.appendChild(div);
+  });
+  if(shown===0)list.innerHTML='<div class="review-item"><p class="rq">No questions in this category.</p></div>';
+}
+document.querySelectorAll(".filter-row .btn").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll(".filter-row .btn").forEach(function(x){x.classList.remove("active");});
+    b.classList.add("active");renderReview(b.getAttribute("data-filter"));
+  });
+});
+$("backLibBtn").addEventListener("click",function(){
+  $("result").style.display="none";state=null;showHome(true);renderLibrary();
+  $("library").scrollIntoView({behavior:"smooth"});
+});
+$("retryBtn").addEventListener("click",function(){
+  var n=lastResult.testNo;$("result").style.display="none";startTest(n);
+});
+
+renderLibrary();
+</script>
+</body>
+</html>
